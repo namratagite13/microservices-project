@@ -1,0 +1,41 @@
+
+
+services:
+  # Service 1: api-service
+  api-service:
+    build: ./api-service
+    ports:
+      - "3000:3000"
+    env_file: ./api-service/.env
+    depends_on:
+      - redis 
+    environment:
+      - REDIS_URL=redis://redis:6379
+
+  # Service 2: user-service
+  user-service:
+    build: ./user-service
+    ports:
+      - "3003:3001"
+    env_file: ./user-service/.env
+    depends_on:
+      - redis 
+    environment:
+      - REDIS_URL=redis://redis:6379
+
+  # Service 3: notes-service
+  notes-service:
+    build: ./notes-service
+    ports:
+      - "3004:3002"
+    env_file: ./notes-service/.env
+    depends_on:
+      - redis 
+    environment:
+      - REDIS_URL=redis://redis:6379
+
+  # Service 4: redis
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
