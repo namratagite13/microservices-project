@@ -36,12 +36,27 @@ Mongodb Atlas
 ### Environmental Variables 
 For api-service  
 ```port```:3000  
-```NODE_ENV```:development  
-```MONGODB_URI```: Your connection string for MongoDB Atlas.      
+```NODE_ENV```:development       
 ```ACCESS_TOKEN_SECRET```: **`YOUR_RANDOM_SECRET_KEY`**  
 ```REDIS_URL```:redis://redis:6379  
 ```USER_SERVICE_URL```:http://user-service:3001  
 ```NOTES_SERVICE_URL```:http://notes-service:3002
+
+For user-service  
+```port```:3001  
+```NODE_ENV```:development  
+```MONGODB_URI```: Your connection string for MongoDB Atlas.      
+```ACCESS_TOKEN_SECRET```: **`YOUR_RANDOM_SECRET_KEY`**  
+```REDIS_URL```:redis://redis:6379  
+
+
+For notes-service  
+```port```:3002    
+```NODE_ENV```:development  
+```MONGODB_URI```: Your connection string for MongoDB Atlas.      
+```ACCESS_TOKEN_SECRET```: **`YOUR_RANDOM_SECRET_KEY`**  
+```REDIS_URL```:redis://redis:6379  
+
 
 ### created basic mailtrap sendbox configuration using mailtrap service  
 MAIL_MAILER=****  
