@@ -33,10 +33,15 @@ Docker compose
 Node.js  
 Mongodb Atlas  
 
-### Environmental Variables  
-MONGODB_URI: Access token generatated by creating Project on MongoDb Atlas.  
-ACCESS_TOKEN_SECRET: Access token for using JWT.   
-REDIS_URL:redis://redis:6379
+### Environmental Variables 
+For api-service  
+```port```:3000  
+```NODE_ENV```:development  
+```MONGODB_URI```: Your connection string for MongoDB Atlas.      
+```ACCESS_TOKEN_SECRET```: **`YOUR_RANDOM_SECRET_KEY`**  
+```REDIS_URL```:redis://redis:6379  
+```USER_SERVICE_URL```:http://user-service:3001  
+```NOTES_SERVICE_URL```:http://notes-service:3002
 
 ### created basic mailtrap sendbox configuration using mailtrap service  
 MAIL_MAILER=****  
