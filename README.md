@@ -26,7 +26,7 @@ Forgot/Reset password system using Mailtrap api.
 Notes controllers such as create, Update, Delete, and Seach by id of user.    
 Strict user only access to notes using Authorization token and user id.    
 
-# Prerequisites
+## Prerequisites
 ### Should be installed:  
 Docker  
 Docker compose  
@@ -77,20 +77,20 @@ main Api can be accessed at ```http://localhost:3000```
 
 ## User Service Endpoints
 user service can be accesssed at ```http://localhost:3000/v1/auth/```  
-### POST - /v1/auth/register  :user registration  
-### POST - /v1/auth/login  :user login 
-### GET - /v1/auth/getProfile  :user profile
-### POST - /v1/auth/forgotPassword  :fogot password mail
-### POST - /v1/auth/resetPassword/:resettoken  :password reset  
+POST - ```/v1/auth/register```           :user registration   
+POST - ```/v1/auth/login```              :user login   
+GET - ```/v1/auth/getProfile```          :user profile  
+POST - ```/v1/auth/forgotPassword```     :fogot password mail  
+POST - ```/v1/auth/resetPassword/:resettoken```  :password reset    
 
 
 ## Notes Service Endpoints
 user service can be accesssed at ```http://localhost:3000/v1/notes/```  
-### POST - /v1/notes/create-note  :create note
-### GET - /v1/notes/get-note :get note
-### GET - /v1/notes/:id  :get not by id
-### POST - /v1/notes/:id  :update note
-### DELETE - /v1/notes/:id :delete note  
+POST - ```/v1/notes/create-note```     :create note    
+GET - ```/v1/notes/get-note```         :get note    
+GET - ```/v1/notes/:id```              :get not by id    
+POST - ```/v1/notes/:id```             :update note    
+DELETE - ```/v1/notes/:id```           :delete note      
 
 
 
