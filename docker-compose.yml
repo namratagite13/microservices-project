@@ -16,7 +16,7 @@ services:
   user-service:
     build: ./user-service
     ports:
-      - "3003:3001"
+      - "3001:3001"
     env_file: ./user-service/.env
     depends_on:
       - redis 
@@ -27,7 +27,7 @@ services:
   notes-service:
     build: ./notes-service
     ports:
-      - "3004:3002"
+      - "3002:3002"
     env_file: ./notes-service/.env
     depends_on:
       - redis 
