@@ -1,68 +1,38 @@
 require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const { rateLimit } = require('express-rate-limit');
-const { RedisStore } = require('rate-limit-redis');
 const proxy = require('express-http-proxy')
 const logger = require('./utils/logger');
-const errorHandler = require('./middleware/errorHandler');
 const Redis = require('ioredis');
-const {authMiddleware} = require('./middleware/authMiddleware')
+const errorHandler = require('./middleware/errorHandler');
+const {authMiddleware} = require('./middleware/authMiddleware');
+const {authRateLimiter} = require('./middleware/authRateLimiter')
 const app = express();
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000 
 
 const redisClient = new Redis(process.env.REDIS_URL);
 
 
 app.use(helmet());
 app.use(express.json());
+app.use(cors());
 
-// Configure allowed frontend origins. You can set FRONTEND_URL (comma-separated) in .env
-const FRONTEND_URL = process.env.FRONTEND_URL || '';
-const allowedFrontendOrigins = [];
-if (FRONTEND_URL) {
-    allowedFrontendOrigins.push(...FRONTEND_URL.split(',').map(s => s.trim()).filter(Boolean));
-}
-// include common Vite dev ports by default
-allowedFrontendOrigins.push('http://localhost:5173', 'http://localhost:5174');
-
-app.use(cors({
-    origin: (origin, callback) => {
-        // allow requests with no origin (e.g., server-to-server, curl)
-        if (!origin) return callback(null, true);
-        if (allowedFrontendOrigins.indexOf(origin) !== -1) return callback(null, true);
-        return callback(new Error(`CORS policy: origin ${origin} not allowed`));
-    },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // IMPORTANT for sending cookies and Authorization headers (like your JWT token)
-}));
-
-//rate limiting 
-const newRateLimit = rateLimit({
-    windowMs: 15*60*1000,
-    max: 100,
-    standardHeaders: true,
-    legacyHeaders: false,
-    handler: (req, res) =>{
-        logger.warn(`Sensitive endpoint rate limit exceeded for IP: ${req.ip}`);
-        res.status(429).json({success: false, message: 'Too many request.'})
-    },
-    store: new RedisStore ({
-        sendCommand: (...args) => redisClient.call(...args),
-    }),
-});
-
-app.use(newRateLimit);
-
-
-//ensuring that every request, regardless of its destination, first passes through this logging step.
 app.use((req, res, next)=>{
     //HTTP method  = req.method
     logger.info(`Received ${req.method} request to ${req.url}`)
     logger.info(`Request body, ${req.body}`);
     next();
+});
+
+app.get('/', (req, res) => {
+    // This simple response will instantly confirm connectivity
+    logger.info('Handling root / request, sending status check.');
+    res.status(200).json({ 
+        status: 'API Gateway is operational', 
+        message: 'Ready to proxy requests to /v1/auth and /v1/notes',
+        time: new Date().toISOString() 
+    });
 });
 
 const proxyOptions = {
@@ -78,7 +48,7 @@ const proxyOptions = {
 };
 
 //setting proxy
-app.use('/v1/auth', proxy(process.env.USER_SERVICE_URL,{
+app.use('/v1/auth', authRateLimiter, proxy(process.env.USER_SERVICE_URL,{
     ...proxyOptions,
     proxyReqOptDecorator:(proxyReqOpts, srcReq) =>{
         proxyReqOpts.headers['content-type'] = 'application/json'

@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema({
     }
 }, {timestamps:true});
 
-//hashing password
 userSchema.pre('save', async function (next){
     if(this.isModified('password')){
         try{
@@ -51,23 +50,19 @@ userSchema.methods.comparePassword = async function(candidatePassword){
 };
 
 userSchema.methods.getResetPasswordToken = function() {
-    // 1. Generate unhashed token (readable string)
-    const resetToken = crypto.randomBytes(20).toString('hex');
     
-    // 2. Hash the token using SHA256 (not argon2, as this is a quick one-way hash for the DB)
+    const resetToken = crypto.randomBytes(20).toString('hex');
     this.resetPasswordToken = crypto
         .createHash('sha256')
         .update(resetToken)
         .digest('hex');
         
-    // 3. Set token expiry time (10 minutes for security)
+    
     this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
     
-    // 4. Return the UNHASHED token to be sent in the email link
     return resetToken;
 };
 
-//search functionality for faster search
 userSchema.index({username: 'text'});
 
 const User = mongoose.model('User', userSchema);

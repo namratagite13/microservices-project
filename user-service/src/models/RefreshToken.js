@@ -1,6 +1,6 @@
 
 const mongoose = require('mongoose');
-//new = build new object based on blueprint
+
 const refreshTokenSchema= new mongoose.Schema({
 
     token:{

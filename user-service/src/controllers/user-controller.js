@@ -56,6 +56,7 @@ const registerUser = async(req, res) =>{
     }
 };
 
+//user login
 const loginUser = async (req, res) =>{
     try{ 
     logger.info('login endpoint hit...')
@@ -91,8 +92,7 @@ const loginUser = async (req, res) =>{
     };
 
     const {accessToken, refreshToken} = await generateToken(user);
-
-    //setting refresh token http-only
+    
     const oneDay = 1000 * 60 * 60 * 24; // 1day expiry
 
     res.cookie('jwt', refreshToken, {
@@ -121,6 +121,8 @@ const loginUser = async (req, res) =>{
     }
 
 };
+
+//get profile 
 
 const getUserProfile = async (req, res) =>{
 
@@ -158,6 +160,7 @@ const getUserProfile = async (req, res) =>{
     
 };
 
+//forgot password
 const forgotPassword = async (req, res) =>{
     const { email } = req.body;
 
@@ -220,7 +223,6 @@ const forgotPassword = async (req, res) =>{
 };
 
 //reset password
-
 const resetPassword = async(req, res) =>{
 
     const resetPasswordToken = crypto
@@ -280,8 +282,6 @@ const resetPassword = async(req, res) =>{
 
 
 };
-
-    
 
 
 module.exports = {registerUser, loginUser, getUserProfile, forgotPassword, resetPassword}

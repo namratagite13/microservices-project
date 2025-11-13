@@ -4,10 +4,8 @@ const express = require('express');
 const logger = require('./utils/logger');
 const helmet = require('helmet');
 const cors = require('cors');
-const {rateLimit} = require('express-rate-limit');
 const Redis = require('ioredis');
 const {RateLimiterRedis} = require('rate-limiter-flexible')
-const {RedisStore} = require('rate-limit-redis');
 const routes = require('./routes/userRoutes');
 const errorHandler = require('./middleware/errorHandler');
 

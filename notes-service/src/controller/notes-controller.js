@@ -3,6 +3,7 @@
 const Note = require('../models/Notes');
 const logger = require('../utils/logger');
 
+//create note
 const createNote = async (req, res) => {
     try{
         const {title, content, category} = req.body;
@@ -38,6 +39,7 @@ const createNote = async (req, res) => {
     }
 };
 
+//get note
 const getNotes = async (req, res) =>{
     try{
         const userId = req.userId;
@@ -68,6 +70,7 @@ const getNotes = async (req, res) =>{
 };
 
 
+//get note by ID
 const getNoteById = async (req, res) =>{
     try{
         const note = await Note.findById(req.params.id);
@@ -105,6 +108,7 @@ const getNoteById = async (req, res) =>{
     }
 };
 
+//update note
 const updateNote = async(req, res)=>{
     try{
         const {title, content, category} = req.body;
@@ -158,6 +162,7 @@ const updateNote = async(req, res)=>{
     }
 };
 
+//delete note
 const deleteNote = async (req, res)=>{
     try{
         const note = await Note.findById(req.params.id);

@@ -1,6 +1,8 @@
+require('dotenv').config();
 const { rateLimit } = require('express-rate-limit');
 const { RedisStore } = require('rate-limit-redis');
 const Redis = require('ioredis');
+const redisClient = new Redis(process.env.REDIS_URL);
 
 const authRateLimiter = rateLimit({
     windowMs: 5 * 60 * 1000, // 5 minutes
@@ -16,4 +18,4 @@ const authRateLimiter = rateLimit({
     }),
 });
 
-export default authRateLimiter;
+module.exports = {authRateLimiter}
