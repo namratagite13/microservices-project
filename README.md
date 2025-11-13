@@ -85,6 +85,10 @@ for checking service status:
 ```
 docker compose ps 
 ```
+for checking docker containerization is successfull  
+```
+curl http://localhost:3000
+```  
 
 
 ## service name and port used  
